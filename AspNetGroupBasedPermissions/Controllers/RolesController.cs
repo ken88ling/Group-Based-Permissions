@@ -15,7 +15,7 @@ namespace AspNetGroupBasedPermissions.Controllers
         public ActionResult Index()
         {
             var rolesList = new List<RoleViewModel>();
-            foreach(var role in _db.Roles)
+            foreach (var role in _db.Roles)
             {
                 var roleModel = new RoleViewModel(role);
                 rolesList.Add(roleModel);
@@ -34,8 +34,7 @@ namespace AspNetGroupBasedPermissions.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult Create([Bind(Include = 
-            "RoleName,Description")]RoleViewModel model)
+        public ActionResult Create([Bind(Include = "RoleName,Description")]RoleViewModel model)
         {
             string message = "That role name has already been used";
             if (ModelState.IsValid)
@@ -43,7 +42,7 @@ namespace AspNetGroupBasedPermissions.Controllers
                 var role = new ApplicationRole(model.RoleName, model.Description);
                 var idManager = new IdentityManager();
 
-                if(idManager.RoleExists(model.RoleName))
+                if (idManager.RoleExists(model.RoleName))
                 {
                     return View(message);
                 }
@@ -69,8 +68,7 @@ namespace AspNetGroupBasedPermissions.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit([Bind(Include = 
-            "RoleName,OriginalRoleName,Description")] EditRoleViewModel model)
+        public ActionResult Edit([Bind(Include = "RoleName,OriginalRoleName,Description")] EditRoleViewModel model)
         {
             if (ModelState.IsValid)
             {

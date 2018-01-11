@@ -59,7 +59,7 @@ namespace AspNetGroupBasedPermissions.Models
 
         public void DeleteRole(string roleId)
         {
-            IQueryable<ApplicationUser> roleUsers = _db.Users.Where(u => u.Roles.Any(r => r.RoleId == roleId));
+            var roleUsers = _db.Users.Where(u => u.Roles.Any(r => r.RoleId == roleId));
             ApplicationRole role = _db.Roles.Find(roleId);
 
             foreach (ApplicationUser user in roleUsers)
