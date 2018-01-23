@@ -198,8 +198,8 @@ namespace AspNetGroupBasedPermissions.Models
             var Db = new ApplicationDbContext();
 
             // Add all available groups to the public list:
-            var allGroups = Db.Groups;
-            foreach (var role in allGroups)
+            //var allGroups = Db.Groups;
+            foreach (var role in Db.Groups)
             {
                 // An EditorViewModel will be used by Editor Template:
                 var rvm = new SelectGroupEditorViewModel(role);
