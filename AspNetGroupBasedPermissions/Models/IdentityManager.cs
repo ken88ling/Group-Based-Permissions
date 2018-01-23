@@ -11,12 +11,8 @@ namespace AspNetGroupBasedPermissions.Models
     {
         // Swap ApplicationRole for IdentityRole:
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
-
-        private readonly RoleManager<ApplicationRole> _roleManager = new RoleManager<ApplicationRole>(
-            new RoleStore<ApplicationRole>(new ApplicationDbContext()));
-
-        private readonly UserManager<ApplicationUser> _userManager = new UserManager<ApplicationUser>(
-            new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        private readonly RoleManager<ApplicationRole> _roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(new ApplicationDbContext()));
+        private readonly UserManager<ApplicationUser> _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
         public bool RoleExists(string name)
         {
@@ -74,8 +70,7 @@ namespace AspNetGroupBasedPermissions.Models
         {
             if (GroupNameExists(groupName))
             {
-                throw new GroupExistsException(
-                    "A group by that name already exists in the database. Please choose another name.");
+                throw new GroupExistsException("A group by that name already exists in the database. Please choose another name.");
             }
 
             var newGroup = new Group(groupName);
