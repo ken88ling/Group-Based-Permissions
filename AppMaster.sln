@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetGroupBasedPermissions", "AspNetGroupBasedPermissions\AspNetGroupBasedPermissions.csproj", "{D7ADA016-6E82-4F70-B6CF-B687A3B6F6EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemApp", "AspNetGroupBasedPermissions\SystemApp.csproj", "{D7ADA016-6E82-4F70-B6CF-B687A3B6F6EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B62D3E84-2357-40C1-98A8-E00806291E5B}
 	EndGlobalSection
 EndGlobal
