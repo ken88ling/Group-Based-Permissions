@@ -10,13 +10,12 @@ namespace AspNetGroupBasedPermissions.Controllers
     public class GroupsController : Controller
     {
         private readonly ApplicationDbContext _db;
-
-        private readonly IdentityManager _idManager;
+        private readonly IdentityManager _imanager;
 
         public GroupsController()
         {
             _db = new ApplicationDbContext();
-            _idManager = new IdentityManager();
+            _imanager = new IdentityManager();
         }
 
 
@@ -42,13 +41,11 @@ namespace AspNetGroupBasedPermissions.Controllers
             return View(group);
         }
 
-
         [Authorize(Roles = "Admin, CanEditGroup")]
         public ActionResult Create()
         {
             return View();
         }
-
 
         [Authorize(Roles = "Admin, CanEditGroup")]
         [HttpPost]
@@ -65,7 +62,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             return View(group);
         }
 
-
         [Authorize(Roles = "Admin, CanEditGroup")]
         public ActionResult Edit(int? id)
         {
@@ -81,7 +77,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             return View(group);
         }
 
-
         [Authorize(Roles = "Admin, CanEditGroup")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -95,7 +90,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             }
             return View(group);
         }
-
 
         [Authorize(Roles = "Admin, CanEditGroup")]
         public ActionResult Delete(int? id)
@@ -112,17 +106,15 @@ namespace AspNetGroupBasedPermissions.Controllers
             return View(group);
         }
 
-
         [Authorize(Roles = "Admin, CanEditGroup")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _idManager.DeleteGroup(id);
+            _imanager.DeleteGroup(id);
             return RedirectToAction("Index");
         }
-
-
+        
         [Authorize(Roles = "Admin, CanEditGroup")]
         public ActionResult GroupRoles(int id)
         {
@@ -143,8 +135,6 @@ namespace AspNetGroupBasedPermissions.Controllers
                 GroupName = group.Name,
                 Roles = roleList
             };
-
-            //var model = new SelectGroupRolesViewModel(group);
             return View(model);
         }
 
@@ -157,14 +147,14 @@ namespace AspNetGroupBasedPermissions.Controllers
             if (ModelState.IsValid)
             {
                 var group = _db.Groups.Find(model.GroupId);
-                _idManager.ClearGroupRoles(model.GroupId);
+                _imanager.ClearGroupRoles(model.GroupId);
 
                 // Add each selected role to this group:
                 foreach (var role in model.Roles)
                 {
                     if (role.Selected)
                     {
-                        _idManager.AddRoleToGroup(group.Id, role.RoleName);
+                        _imanager.AddRoleToGroup(group.Id, role.RoleName);
                     }
                 }
                 return RedirectToAction("index");

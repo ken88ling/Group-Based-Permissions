@@ -14,22 +14,19 @@ namespace AspNetGroupBasedPermissions.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        ApplicationDbContext _db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db;
 
-        public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        public AccountController() : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
-
 
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
+            _db = new ApplicationDbContext();
         }
 
-
         public UserManager<ApplicationUser> UserManager { get; private set; }
-
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -37,7 +34,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
 
         [HttpPost]
         [AllowAnonymous]
@@ -52,8 +48,8 @@ namespace AspNetGroupBasedPermissions.Controllers
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
-                
-                ModelState.AddModelError("", "Invalid username or password.");
+
+                ModelState.AddModelError("", @"Invalid username or password.");
             }
 
             // If we got this far, something failed, redisplay form
@@ -79,10 +75,7 @@ namespace AspNetGroupBasedPermissions.Controllers
                 {
                     return RedirectToAction("Index", "Account");
                 }
-
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -100,7 +93,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -129,10 +121,7 @@ namespace AspNetGroupBasedPermissions.Controllers
             {
                 // User does not have a password so remove any validation errors caused by a missing OldPassword field
                 ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
+                state?.Errors.Clear();
 
                 if (ModelState.IsValid)
                 {
@@ -152,7 +141,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -160,7 +148,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
-
 
         protected override void Dispose(bool disposing)
         {
@@ -188,11 +175,11 @@ namespace AspNetGroupBasedPermissions.Controllers
 
 
         [Authorize(Roles = "Admin, CanEditUser")]
-        public ActionResult Edit(string id, ManageMessageId? Message = null)
+        public ActionResult Edit(string id, ManageMessageId? message = null)
         {
             var user = _db.Users.First(u => u.UserName == id);
             var model = new EditUserViewModel(user);
-            ViewBag.MessageId = Message;
+            ViewBag.MessageId = message;
             return View(model);
         }
 
@@ -286,14 +273,7 @@ namespace AspNetGroupBasedPermissions.Controllers
 
         #region Helpers
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
@@ -315,11 +295,7 @@ namespace AspNetGroupBasedPermissions.Controllers
         private bool HasPassword()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
+            return user?.PasswordHash != null;
         }
 
 
@@ -338,7 +314,6 @@ namespace AspNetGroupBasedPermissions.Controllers
             {
                 return Redirect(returnUrl);
             }
-            
             return RedirectToAction("Index", "Home");
         }
 

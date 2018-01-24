@@ -115,9 +115,11 @@ namespace AspNetGroupBasedPermissions.Models
         public void ClearGroupRoles(int groupId)
         {
             Group group = _db.Groups.Find(groupId);
-            IQueryable<ApplicationUser> groupUsers = _db.Users.Where(u => u.Groups.Any(g => g.GroupId == group.Id));
+            var roleGroupList = group.Roles;
 
-            foreach (ApplicationRoleGroup role in group.Roles)
+            var groupUsers = _db.Users.Where(u => u.Groups.Any(g => g.GroupId == group.Id));
+
+            foreach (ApplicationRoleGroup role in roleGroupList)
             {
                 string currentRoleId = role.RoleId;
                 foreach (ApplicationUser user in groupUsers)
@@ -128,7 +130,7 @@ namespace AspNetGroupBasedPermissions.Models
                     // This will be 1 if the current group is the only one:
                     if (groupsWithRole == 1)
                     {
-                        RemoveUserFromRole(user.Id, role.Role.Name);
+                        _userManager.RemoveFromRole(user.Id, role.Role.Name);// delete from table aspNetUserRoles
                     }
                 }
             }
@@ -140,7 +142,7 @@ namespace AspNetGroupBasedPermissions.Models
         {
             Group group = _db.Groups.Find(groupId);
             ApplicationRole role = _db.Roles.First(r => r.Name == roleName);
-            
+
             var newgroupRole = new ApplicationRoleGroup
             {
                 GroupId = group.Id,
@@ -162,7 +164,7 @@ namespace AspNetGroupBasedPermissions.Models
             {
                 if (!(_userManager.IsInRole(user.Id, roleName)))
                 {
-                    AddUserToRole(user.Id, role.Name);
+                    AddUserToRole(user.Id, role.Name);//_userManager.AddToRole(userId, roleName);
                 }
             }
         }
