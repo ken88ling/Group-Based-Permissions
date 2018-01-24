@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AspNetGroupBasedPermissions.Models.EditUserViewModel>
+﻿@model IEnumerable<AspNetGroupBasedPermissions.ViewModels.EditUserViewModel>
 @{ ViewBag.Title = "Index"; }
 
 <h2>Users</h2>
@@ -20,7 +20,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
-        <th></th>
+        <th>Action</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -39,8 +39,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.UserName }) |
-            @Html.ActionLink("Groups", "UserGroups", new { id = item.UserName }) |
-            @Html.ActionLink("Effective Permissions", "UserPermissions", new { id = item.UserName }) ||| 
+            @Html.ActionLink("Assign to Groups", "UserGroups", new { id = item.UserName }) |
+            @Html.ActionLink("Roles", "UserPermissions", new { id = item.UserName }) ||| 
             @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
         </td>
     </tr>

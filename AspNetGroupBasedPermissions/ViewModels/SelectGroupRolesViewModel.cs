@@ -20,9 +20,9 @@ namespace AspNetGroupBasedPermissions.ViewModels
             var context = new ApplicationDbContext();
 
             // Add all available roles to the list of EditorViewModels:
+            // An EditorViewModel will be used by Editor Template:
             foreach (var role in context.Roles)
             {
-                // An EditorViewModel will be used by Editor Template:
                 var rvm = new SelectRoleEditorViewModel(role);
                 Roles.Add(rvm);
             }

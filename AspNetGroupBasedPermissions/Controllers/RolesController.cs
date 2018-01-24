@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AspNetGroupBasedPermissions.ViewModels;
 
 namespace AspNetGroupBasedPermissions.Controllers
 {
@@ -39,7 +40,7 @@ namespace AspNetGroupBasedPermissions.Controllers
             string message = "That role name has already been used";
             if (ModelState.IsValid)
             {
-                var role = new ApplicationRole(model.RoleName, model.Description);
+                //var role = new ApplicationRole(model.RoleName, model.Description);
                 var idManager = new IdentityManager();
 
                 if (idManager.RoleExists(model.RoleName))
@@ -49,7 +50,7 @@ namespace AspNetGroupBasedPermissions.Controllers
                 else
                 {
                     idManager.CreateRole(model.RoleName, model.Description);
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("Index", "Roles");
                 }
             }
             return View();

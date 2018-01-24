@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AspNetGroupBasedPermissions.Models.RoleViewModel>
+﻿@model IEnumerable<AspNetGroupBasedPermissions.ViewModels.RoleViewModel>
 
 @{
     ViewBag.Title = "Application Roles";
@@ -17,7 +17,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th></th>
+        <th>Action</th>
     </tr>
 
 @foreach (var item in Model) {

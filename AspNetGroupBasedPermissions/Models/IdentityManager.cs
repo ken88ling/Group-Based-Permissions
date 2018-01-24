@@ -48,7 +48,7 @@ namespace AspNetGroupBasedPermissions.Models
             }
         }
 
-        public void RemoveFromRole(string userId, string roleName)
+        public void RemoveUserFromRole(string userId, string roleName)
         {
             _userManager.RemoveFromRole(userId, roleName);
         }
@@ -60,7 +60,7 @@ namespace AspNetGroupBasedPermissions.Models
 
             foreach (ApplicationUser user in roleUsers)
             {
-                RemoveFromRole(user.Id, role.Name);
+                RemoveUserFromRole(user.Id, role.Name);
             }
             _db.Roles.Remove(role);
             _db.SaveChanges();
@@ -82,7 +82,6 @@ namespace AspNetGroupBasedPermissions.Models
         {
             return _db.Groups.Any(gr => gr.Name == groupName);
         }
-
 
         public void ClearUserGroups(string userId)
         {
@@ -129,7 +128,7 @@ namespace AspNetGroupBasedPermissions.Models
                     // This will be 1 if the current group is the only one:
                     if (groupsWithRole == 1)
                     {
-                        RemoveFromRole(user.Id, role.Role.Name);
+                        RemoveUserFromRole(user.Id, role.Role.Name);
                     }
                 }
             }
