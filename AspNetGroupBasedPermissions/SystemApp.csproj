@@ -191,7 +191,6 @@
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\SelectGroupEditorViewModel.cs" />
     <Compile Include="ViewModels\SelectGroupRolesViewModel.cs" />
-    <Compile Include="ViewModels\SelectRoleEditorViewModel.cs" />
     <Compile Include="ViewModels\SelectUserGroupsViewModel.cs" />
     <Compile Include="ViewModels\UserPermissionsViewModel.cs" />
   </ItemGroup>

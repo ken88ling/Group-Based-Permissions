@@ -9,12 +9,21 @@ namespace AspNetGroupBasedPermissions.Controllers
 {
     public class GroupsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db;
+
+        private readonly IdentityManager _idManager;
+
+        public GroupsController()
+        {
+            _db = new ApplicationDbContext();
+            _idManager = new IdentityManager();
+        }
+
 
         [Authorize(Roles = "Admin, CanEditGroup, CanEditUser")]
         public ActionResult Index()
         {
-            return View(db.Groups.ToList());
+            return View(_db.Groups.ToList());
         }
 
 
@@ -25,7 +34,7 @@ namespace AspNetGroupBasedPermissions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.Groups.Find(id);
+            Group group = _db.Groups.Find(id);
             if (group == null)
             {
                 return HttpNotFound();
@@ -44,12 +53,12 @@ namespace AspNetGroupBasedPermissions.Controllers
         [Authorize(Roles = "Admin, CanEditGroup")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Name")] Group group)
+        public ActionResult Create([Bind(Include = "Name")] Group group)
         {
             if (ModelState.IsValid)
             {
-                db.Groups.Add(group);
-                db.SaveChanges();
+                _db.Groups.Add(group);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -64,7 +73,7 @@ namespace AspNetGroupBasedPermissions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.Groups.Find(id);
+            Group group = _db.Groups.Find(id);
             if (group == null)
             {
                 return HttpNotFound();
@@ -76,12 +85,12 @@ namespace AspNetGroupBasedPermissions.Controllers
         [Authorize(Roles = "Admin, CanEditGroup")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Id,Name")] Group group)
+        public ActionResult Edit([Bind(Include = "Id,Name")] Group group)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(group).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(group).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(group);
@@ -95,7 +104,7 @@ namespace AspNetGroupBasedPermissions.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.Groups.Find(id);
+            Group group = _db.Groups.Find(id);
             if (group == null)
             {
                 return HttpNotFound();
@@ -109,9 +118,7 @@ namespace AspNetGroupBasedPermissions.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Group group = db.Groups.Find(id);
-            var idManager = new IdentityManager();
-            idManager.DeleteGroup(id);
+            _idManager.DeleteGroup(id);
             return RedirectToAction("Index");
         }
 
@@ -119,8 +126,25 @@ namespace AspNetGroupBasedPermissions.Controllers
         [Authorize(Roles = "Admin, CanEditGroup")]
         public ActionResult GroupRoles(int id)
         {
-            var group = db.Groups.Find(id);
-            var model = new SelectGroupRolesViewModel(group);
+            var group = _db.Groups.Find(id);
+            var groupList = group.Roles.ToList();
+
+            var roleList = (_db.Roles.ToList()
+                .Select(u => new SelectRoleEditorViewModel()
+                {
+                    Description = u.Description,
+                    RoleName = u.Name,
+                    Selected = groupList.Any(x => x.Role.Name == u.Name)
+                })).ToList();
+
+            var model = new SelectGroupRolesViewModel()
+            {
+                GroupId = group.Id,
+                GroupName = group.Name,
+                Roles = roleList
+            };
+
+            //var model = new SelectGroupRolesViewModel(group);
             return View(model);
         }
 
@@ -132,17 +156,15 @@ namespace AspNetGroupBasedPermissions.Controllers
         {
             if (ModelState.IsValid)
             {
-                var idManager = new IdentityManager();
-                var Db = new ApplicationDbContext();
-                var group = Db.Groups.Find(model.GroupId);
-                idManager.ClearGroupRoles(model.GroupId);
+                var group = _db.Groups.Find(model.GroupId);
+                _idManager.ClearGroupRoles(model.GroupId);
 
                 // Add each selected role to this group:
                 foreach (var role in model.Roles)
                 {
                     if (role.Selected)
                     {
-                        idManager.AddRoleToGroup(group.Id, role.RoleName);
+                        _idManager.AddRoleToGroup(group.Id, role.RoleName);
                     }
                 }
                 return RedirectToAction("index");
@@ -155,7 +177,7 @@ namespace AspNetGroupBasedPermissions.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
