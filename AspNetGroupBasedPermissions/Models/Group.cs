@@ -10,11 +10,10 @@ namespace AspNetGroupBasedPermissions.Models
         }
 
 
-        public Group(string name) : this()
-        {
-            Roles = new List<ApplicationRoleGroup>();
-            Name = name;
-        }
+        //public Group(string name) : this()
+        //{
+        //    Name = name;
+        //}
 
 
         [Key]
@@ -22,6 +21,7 @@ namespace AspNetGroupBasedPermissions.Models
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 
-        public virtual ICollection<ApplicationRoleGroup> Roles { get; set; }
+        public virtual ICollection<ApplicationRoleGroup> Roles { get; set; } = new List<ApplicationRoleGroup>();
+
     }
 }

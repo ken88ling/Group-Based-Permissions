@@ -248,7 +248,7 @@ namespace AspNetGroupBasedPermissions.Controllers
             {
                 var idManager = new IdentityManager();
                 var user = _db.Users.First(u => u.UserName == model.UserName);
-                idManager.ClearUserGroups(user.Id);
+                idManager.ClearUserGroupsByUserId(user.Id);
                 foreach (var group in model.Groups)
                 {
                     if (group.Selected)

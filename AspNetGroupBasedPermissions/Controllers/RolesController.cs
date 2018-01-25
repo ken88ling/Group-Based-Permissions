@@ -5,12 +5,26 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using AspNetGroupBasedPermissions.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace AspNetGroupBasedPermissions.Controllers
 {
     public class RolesController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private ApplicationDbContext _db = new ApplicationDbContext();
+
+        public RolesController()
+        {
+
+        }
+
+        public RolesController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
 
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
@@ -49,7 +63,14 @@ namespace AspNetGroupBasedPermissions.Controllers
                 }
                 else
                 {
-                    idManager.CreateRole(model.RoleName, model.Description);
+                    var newRole = new ApplicationRole()
+                    {
+                        Name = model.RoleName,
+                        Description = model.Description
+                    };
+                    _roleManager.Create(newRole);
+
+                    //idManager.CreateRole(model.RoleName, model.Description);
                     return RedirectToAction("Index", "Roles");
                 }
             }

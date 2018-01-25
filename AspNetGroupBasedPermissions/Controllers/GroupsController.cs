@@ -147,14 +147,14 @@ namespace AspNetGroupBasedPermissions.Controllers
             if (ModelState.IsValid)
             {
                 var group = _db.Groups.Find(model.GroupId);
-                _imanager.ClearGroupRoles(model.GroupId);
+                _imanager.RemoveGroupRolesByGroupId(model.GroupId);
 
                 // Add each selected role to this group:
                 foreach (var role in model.Roles)
                 {
                     if (role.Selected)
                     {
-                        _imanager.AddRoleToGroup(group.Id, role.RoleName);
+                        _imanager.CreateApplicationRoleGroup(group.Id, role.RoleName);
                     }
                 }
                 return RedirectToAction("index");

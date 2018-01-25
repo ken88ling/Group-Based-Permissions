@@ -67,11 +67,11 @@ namespace AspNetGroupBasedPermissions.Migrations
         private void AddRoles()
         {
             // Some example initial roles. These COULD BE much more granular:
-            _idManager.CreateRole("Admin", "Global Access");
-            _idManager.CreateRole("CanEditUser", "Add, modify, and delete Users");
-            _idManager.CreateRole("CanEditGroup", "Add, modify, and delete Groups");
-            _idManager.CreateRole("CanEditRole", "Add, modify, and delete roles");
-            _idManager.CreateRole("User", "Restricted to business domain activity");
+            //_idManager.CreateRole("Admin", "Global Access");
+            //_idManager.CreateRole("CanEditUser", "Add, modify, and delete Users");
+            //_idManager.CreateRole("CanEditGroup", "Add, modify, and delete Groups");
+            //_idManager.CreateRole("CanEditRole", "Add, modify, and delete roles");
+            //_idManager.CreateRole("User", "Restricted to business domain activity");
         }
 
         private void AddRolesToGroups()
@@ -81,28 +81,28 @@ namespace AspNetGroupBasedPermissions.Migrations
             Group superAdmins = allGroups.First(g => g.Name == "SuperAdmins");
             foreach (string name in _superAdminRoleNames)
             {
-                _idManager.AddRoleToGroup(superAdmins.Id, name);
+                _idManager.CreateApplicationRoleGroup(superAdmins.Id, name);
             }
 
             // Add the Group-Admin Roles to the Group-Admin Group:
             Group groupAdmins = _db.Groups.First(g => g.Name == "GroupAdmins");
             foreach (string name in _groupAdminRoleNames)
             {
-                _idManager.AddRoleToGroup(groupAdmins.Id, name);
+                _idManager.CreateApplicationRoleGroup(groupAdmins.Id, name);
             }
 
             // Add the User-Admin Roles to the User-Admin Group:
             Group userAdmins = _db.Groups.First(g => g.Name == "UserAdmins");
             foreach (string name in _userAdminRoleNames)
             {
-                _idManager.AddRoleToGroup(userAdmins.Id, name);
+                _idManager.CreateApplicationRoleGroup(userAdmins.Id, name);
             }
 
             // Add the User Roles to the Users Group:
             Group users = _db.Groups.First(g => g.Name == "Users");
             foreach (string name in _userRoleNames)
             {
-                _idManager.AddRoleToGroup(users.Id, name);
+                _idManager.CreateApplicationRoleGroup(users.Id, name);
             }
         }
 
