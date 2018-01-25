@@ -266,8 +266,19 @@ namespace AspNetGroupBasedPermissions.Controllers
         public ActionResult UserPermissions(string id)
         {
             var user = _db.Users.First(u => u.UserName == id);
-            var model = new UserPermissionsViewModel(user);
-            return View(model);
+
+            
+            var query =
+                from u in user.Roles 
+                join r in _db.Roles on u.RoleId equals r.Id
+                select new UserPermissionsViewModel()
+                {
+                    RoleId = r.Id,
+                    Description = r.Description,
+                    RoleName = r.Name
+                };
+            
+            return View(query.ToList());
         }
 
 

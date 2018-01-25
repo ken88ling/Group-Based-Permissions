@@ -5,19 +5,17 @@ namespace AspNetGroupBasedPermissions.ViewModels
 {
     public class SelectUserGroupsViewModel
     {
+        public SelectUserGroupsViewModel() { }
+
         // Wrapper for SelectGroupEditorViewModel to select user group membership:
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<SelectGroupEditorViewModel> Groups { get; set; }
 
-        public SelectUserGroupsViewModel()
-        {
-            this.Groups = new List<SelectGroupEditorViewModel>();
-        }
+        public List<SelectGroupEditorViewModel> Groups { get; set; } = new List<SelectGroupEditorViewModel>();
 
-        public SelectUserGroupsViewModel(ApplicationUser user)
-            : this()
+
+        public SelectUserGroupsViewModel(ApplicationUser user) : this()
         {
             this.UserName = user.UserName;
             this.FirstName = user.FirstName;
@@ -30,7 +28,11 @@ namespace AspNetGroupBasedPermissions.ViewModels
             foreach (var role in Db.Groups)
             {
                 // An EditorViewModel will be used by Editor Template:
-                var rvm = new SelectGroupEditorViewModel(role);
+                var rvm = new SelectGroupEditorViewModel()
+                {
+                    GroupId = role.Id,
+                    GroupName = role.Name
+                };
                 this.Groups.Add(rvm);
             }
 

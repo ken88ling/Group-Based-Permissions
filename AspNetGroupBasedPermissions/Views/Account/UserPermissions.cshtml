@@ -1,31 +1,44 @@
-﻿@model AspNetGroupBasedPermissions.ViewModels.UserPermissionsViewModel
+﻿
+@model IEnumerable<AspNetGroupBasedPermissions.ViewModels.UserPermissionsViewModel>
+
 @{ ViewBag.Title = "UserPermissions"; }
 
-<h2>Effective Role Permissions for user: @Html.DisplayFor(model => model.UserName)</h2>
+<h2>Effective Role Permissions for user: Load user</h2>
 <hr />
 
+
 <table class="table">
+  <thead>
     <tr>
-        <th>
-            Role Permission
-        </th>
-        <th>
-           Description
-        </th>
-        <th></th>
+      <th>
+        @Html.DisplayNameFor(model => model.RoleId)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.RoleName)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.Description)
+      </th>
     </tr>
-    @foreach (var item in Model.Roles)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-        </tr>
-    }
+  </thead>
+  <tbody>
+  @foreach (var item in Model) {
+    <tr>
+      <td>
+        @Html.DisplayFor(modelItem => item.RoleId)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.RoleName)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Description)
+      </td>
+    </tr>
+  }
+  </tbody>
 </table>
+
+
 <div>
-    @Html.ActionLink("Back to List", "Index")
+  @Html.ActionLink("Back to List", "Index")
 </div>
