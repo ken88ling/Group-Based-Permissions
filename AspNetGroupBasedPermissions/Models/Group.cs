@@ -9,13 +9,6 @@ namespace AspNetGroupBasedPermissions.Models
         {
         }
 
-
-        //public Group(string name) : this()
-        //{
-        //    Name = name;
-        //}
-
-
         [Key]
         [Required]
         public virtual int Id { get; set; }

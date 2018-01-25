@@ -8,7 +8,7 @@ namespace AspNetGroupBasedPermissions.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         // Add an instance IDbSet using the 'new' keyword:
-        new public virtual IDbSet<ApplicationRole> Roles { get; set; }
+        public new virtual IDbSet<ApplicationRole> Roles { get; set; }
         public virtual IDbSet<Group> Groups { get; set; }
 
         public ApplicationDbContext()

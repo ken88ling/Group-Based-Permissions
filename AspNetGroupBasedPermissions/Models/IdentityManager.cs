@@ -18,13 +18,7 @@ namespace AspNetGroupBasedPermissions.Models
         {
             return _roleManager.RoleExists(name);
         }
-
-        public IdentityResult CreateRole1(string name, string description = "")
-        {
-            // Swap ApplicationRole for IdentityRole:
-            return _roleManager.Create(new ApplicationRole(name, description));
-        }
-
+        
         public IdentityResult CreateUser(ApplicationUser user, string password)
         {
             return _userManager.Create(user, password);
@@ -48,6 +42,8 @@ namespace AspNetGroupBasedPermissions.Models
         {
             var roleUsers = _db.Users.Where(u => u.Roles.Any(r => r.RoleId == roleId));
             ApplicationRole role = _db.Roles.Find(roleId);
+
+            //var roleUsersList = roleUsers.ToList();
 
             foreach (ApplicationUser user in roleUsers)
             {

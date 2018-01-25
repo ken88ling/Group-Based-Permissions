@@ -67,7 +67,7 @@ namespace AspNetGroupBasedPermissions.Migrations
         private void AddRoles()
         {
             // Some example initial roles. These COULD BE much more granular:
-            //_idManager.CreateRole("Admin", "Global Access");
+            //_idManager.creater("Admin", "Global Access");
             //_idManager.CreateRole("CanEditUser", "Add, modify, and delete Users");
             //_idManager.CreateRole("CanEditGroup", "Add, modify, and delete Groups");
             //_idManager.CreateRole("CanEditRole", "Add, modify, and delete roles");
