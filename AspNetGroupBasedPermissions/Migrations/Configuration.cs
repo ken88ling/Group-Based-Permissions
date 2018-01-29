@@ -22,14 +22,11 @@ namespace AspNetGroupBasedPermissions.Migrations
         private const string VaniallaUserEmail = "vanilla@test.com";
         private const string VaniallaUserPassword = "Password1";
 
-
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
         private readonly string[] _groupAdminRoleNames = {"CanEditUser", "CanEditGroup", "User"};
         private readonly IdentityManager _idManager = new IdentityManager();
 
         private readonly string[] _initialGroupNames = {"SuperAdmins", "GroupAdmins", "UserAdmins", "Users"};
-
-
         private readonly string[] _superAdminRoleNames = {"Admin", "CanEditUser", "CanEditGroup", "CanEditRole", "User"};
         private readonly string[] _userAdminRoleNames = {"CanEditUser", "User"};
         private readonly string[] _userRoleNames = {"User"};
@@ -67,11 +64,11 @@ namespace AspNetGroupBasedPermissions.Migrations
         private void AddRoles()
         {
             // Some example initial roles. These COULD BE much more granular:
-            //_idManager.creater("Admin", "Global Access");
-            //_idManager.CreateRole("CanEditUser", "Add, modify, and delete Users");
-            //_idManager.CreateRole("CanEditGroup", "Add, modify, and delete Groups");
-            //_idManager.CreateRole("CanEditRole", "Add, modify, and delete roles");
-            //_idManager.CreateRole("User", "Restricted to business domain activity");
+            _idManager.CreateRole("Admin", "Global Access");
+            _idManager.CreateRole("CanEditUser", "Add, modify, and delete Users");
+            _idManager.CreateRole("CanEditGroup", "Add, modify, and delete Groups");
+            _idManager.CreateRole("CanEditRole", "Add, modify, and delete roles");
+            _idManager.CreateRole("User", "Restricted to business domain activity");
         }
 
         private void AddRolesToGroups()

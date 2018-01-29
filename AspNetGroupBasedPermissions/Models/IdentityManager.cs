@@ -24,6 +24,18 @@ namespace AspNetGroupBasedPermissions.Models
             return _userManager.Create(user, password);
         }
 
+        // initial use 
+        public IdentityResult CreateRole(string name, string description = "")
+        {
+            var appRole = new ApplicationRole()
+            {
+                Name = name,
+                Description = description
+            };
+            return _roleManager.Create(appRole);
+        }
+
+
         public IdentityResult AddUserToRole(string userId, string roleName)
         {
             return _userManager.AddToRole(userId, roleName);
