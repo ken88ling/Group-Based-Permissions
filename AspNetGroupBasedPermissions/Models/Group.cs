@@ -10,7 +10,7 @@ namespace AspNetGroupBasedPermissions.Models
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
 
-        public virtual ICollection<ApplicationRoleGroup> Roles { get; set; } = new List<ApplicationRoleGroup>();
+        public virtual ICollection<ApplicationRoleGroup> ApplicationRoleGroups { get; set; } = new List<ApplicationRoleGroup>();
 
     }
 }

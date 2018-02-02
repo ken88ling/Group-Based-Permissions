@@ -119,7 +119,7 @@ namespace AspNetGroupBasedPermissions.Controllers
         public ActionResult GroupRoles(int id)
         {
             var group = _db.Groups.Find(id);
-            var groupList = group.Roles.ToList();
+            var groupList = group.ApplicationRoleGroups.ToList();
 
             var roleList = (_db.Roles.ToList()
                 .Select(u => new SelectRoleEditorViewModel()

@@ -45,7 +45,7 @@ namespace AspNetGroupBasedPermissions.Models
             modelBuilder.Entity<ApplicationUserGroup>().HasKey((ApplicationUserGroup r) => new { UserId = r.UserId, GroupId = r.GroupId }).ToTable("ApplicationUserGroups");
 
             // And here:
-            modelBuilder.Entity<Group>().HasMany<ApplicationRoleGroup>((Group g) => g.Roles);
+            modelBuilder.Entity<Group>().HasMany<ApplicationRoleGroup>((Group g) => g.ApplicationRoleGroups);
             modelBuilder.Entity<ApplicationRoleGroup>().HasKey((ApplicationRoleGroup gr) => new { RoleId = gr.RoleId, GroupId = gr.GroupId }).ToTable("ApplicationRoleGroups");
 
             // And Here:
