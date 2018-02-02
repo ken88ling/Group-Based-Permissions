@@ -115,13 +115,15 @@ namespace AspNetGroupBasedPermissions.Models
         public void RemoveGroupRolesByGroupId(int groupId)
         {
             Group group = _db.Groups.Find(groupId);
-
+            var userlistFromGroup = _db.Users.Where(u => u.Groups.Any(g => g.GroupId == groupId));
+            
             foreach (ApplicationRoleGroup roleGroup in group.Roles)
             {
-                foreach (ApplicationUser user in _db.Users.Where(u => u.Groups.Any(g => g.GroupId == groupId)))
+                foreach (ApplicationUser user in userlistFromGroup)
                 {
                     // Is the user a member of any other groups with this role?
-                    int groupsWithRole = user.Groups.Count(g => g.Group.Roles.Any(r => r.RoleId == roleGroup.RoleId));
+                    int groupsWithRole = user.Groups.Count(g => g.Group.Roles
+                        .Any(r => r.RoleId == roleGroup.RoleId));
 
                     // This will be 1 if the current group is the only one:
                     if (groupsWithRole == 1)

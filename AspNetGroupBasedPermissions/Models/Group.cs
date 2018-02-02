@@ -5,10 +5,6 @@ namespace AspNetGroupBasedPermissions.Models
 {
     public class Group
     {
-        public Group()
-        {
-        }
-
         [Key]
         [Required]
         public virtual int Id { get; set; }
